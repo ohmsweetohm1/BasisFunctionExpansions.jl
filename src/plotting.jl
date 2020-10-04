@@ -28,7 +28,7 @@ end
     Npoints = 50
     v = [range(mi, ma, length=Npoints) for (mi,ma) in zip(minb,maxb)]
     vg = meshgrid(v...)
-    v  = d[:seriestype] == :surface ? vg : v
+    # v  = plotattributes[:seriestype] == :surface ? vg : v # not really sure what this is for
     if style == :default
         bg = map(vg...) do v1,v2
             maximum(rbf([v1,v2]))
@@ -40,7 +40,7 @@ end
         bg = map(vg...) do v1,v2
             rbf([v1,v2])
         end
-        bg = cat(3,bg...)
+        bg = cat(bg...,dims=3)
         bg = reshape(bg, size(bg,1), Npoints, Npoints)
         for i = 1:size(bg,1)
             @series (v..., bg[i,:,:])
